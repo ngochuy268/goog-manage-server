@@ -47,7 +47,7 @@ app.post('/insert-nhanvien', async (req, res) => {
     }
     
     try {
-        const result = await db.getConnection(`
+        const result = await db.query(`
             INSERT INTO nhanvien (id, name, password, gender, phone, email, address, avatar, birthday)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `, [id, name, password, gender, phone, email, address, avatar, birthday]);
@@ -70,7 +70,7 @@ app.post('/login', (req, res) => {
     const { id, password } = req.body;
 
     const sql = 'SELECT password FROM nhanvien WHERE id = ?';
-    db.getConnection(sql, [id], (err, results) => {
+    db.query(sql, [id], (err, results) => {
         if (err) return res.status(500).json({ error: 'Có lỗi xảy ra' });
 
         if (results.length === 0) {
@@ -99,7 +99,7 @@ app.post('/login', (req, res) => {
 app.get('/get-nhanvien/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        db.getConnection(`
+        db.query(`
             SELECT id, name, gender, phone, email, address, avatar, birthday
             FROM nhanvien
             WHERE id = ?
@@ -139,7 +139,7 @@ app.put('/update-avatar/:id', (req, res) => {
     const { avatar } = req.body;
 
     const sql = 'SELECT * FROM nhanvien WHERE id = ?';
-    db.getConnection(sql, [id], (err, results) => {
+    db.query(sql, [id], (err, results) => {
         if (err) {
             return res.status(500).json({ 
                 success: false, 
@@ -155,7 +155,7 @@ app.put('/update-avatar/:id', (req, res) => {
         }
 
         const updateSql = 'UPDATE nhanvien SET avatar = ? WHERE id = ?';
-        db.getConnection(updateSql, [avatar, id], (updateErr, updateResults) => {
+        db.query(updateSql, [avatar, id], (updateErr, updateResults) => {
             if (updateErr) {
                 return res.status(500).json({ 
                     success: false,  
@@ -177,7 +177,7 @@ app.post('/change-password', (req, res) => {
     const { id, password } = req.body;
 
     const sql = 'SELECT * FROM nhanvien WHERE id = ?';
-    db.getConnection(sql, [id], (err, results) => {
+    db.query(sql, [id], (err, results) => {
         if (err) {
             return res.status(500).json({ error: 'Có lỗi xảy ra khi truy vấn cơ sở dữ liệu' });
         }
@@ -187,7 +187,7 @@ app.post('/change-password', (req, res) => {
         }
 
         const updateSql = 'UPDATE nhanvien SET password = ? WHERE id = ?';
-        db.getConnection(updateSql, [password, id], (updateErr, updateResults) => {
+        db.query(updateSql, [password, id], (updateErr, updateResults) => {
             if (updateErr) {
                 return res.status(500).json({ success: false,  error: 'Có lỗi xảy ra khi cập nhật mật khẩu' });
             }
@@ -212,7 +212,7 @@ app.post('/send-otp', async (req, res) => {
     const { email, id } = req.body;
 
     const sql = 'SELECT * FROM nhanvien WHERE id = ? AND email = ?';
-    db.getConnection(sql, [id, email], async (err, results) => {
+    db.query(sql, [id, email], async (err, results) => {
         if (err) {
             return res.status(500).json({ success: false, message: 'Có lỗi xảy ra khi truy vấn cơ sở dữ liệu' });
         }
@@ -263,7 +263,7 @@ app.post('/insert-good', async (req, res) => {
 
     try {
         
-        const result = await db.getConnection(`
+        const result = await db.query(`
             INSERT INTO sanpham (idgood, namegood, sell, purchase, image, quantity, status)
             VALUES (?, ?, ?, ?, ?, ?, ?)
         `, [id, name, sell, cost, image, quantity, status]);
@@ -281,7 +281,7 @@ app.post('/insert-good', async (req, res) => {
 
 //---------------------------------GET GOODS-----------------------------------------------
 app.get('/get-goods', (req, res) => {
-    db.getConnection('SELECT * FROM sanpham', (err, rows) => {
+    db.query('SELECT * FROM sanpham', (err, rows) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ success: false, message: 'データの取得中にエラーが発生しました。' });
@@ -301,7 +301,7 @@ app.put('/update-good', (req, res) => {
         WHERE idgood = ?
     `;
     
-    db.getConnection(query, [namegood, sell, purchase, status, idgood], (err, result) => {
+    db.query(query, [namegood, sell, purchase, status, idgood], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ 
@@ -327,7 +327,7 @@ app.delete('/delete-good/:id', (req, res) => {
     
     const query = 'DELETE FROM sanpham WHERE idgood = ?';
     
-    db.getConnection(query, [goodId], (err, result) => {
+    db.query(query, [goodId], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ 
