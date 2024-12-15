@@ -20,21 +20,35 @@ const productController = {
         }
     },
 
-    getAll: async (req, res) => {
-        // try {
-        //     const products = await Product.getAll();
-        //     res.json({
-        //         success: true,
-        //         data: products
-        //     });
-        // } catch (error) {
-        //     console.error('Error in getAll:', error);
-        //     res.status(500).json({
-        //         success: false,
-        //         message: 'エラーが発生しました'
-        //     });
-        // }
-        res.send("Hello");
+    // getAll: async (req, res) => {
+    //     try {
+    //         const products = await Product.getAll();
+    //         res.json({
+    //             success: true,
+    //             data: products
+    //         });
+    //     } catch (error) {
+    //         console.error('Error in getAll:', error);
+    //         res.status(500).json({
+    //             success: false,
+    //             message: 'エラーが発生しました'
+    //         });
+    //     }
+    // },
+    getAll: (req, res) => {
+        Product.getAll((error, results) => {
+            if (error) {
+                console.error('GetAll error:', error);
+                return res.status(500).json({
+                    success: false,
+                    message: 'Error occurred while fetching products.',
+                });
+            }
+            res.json({
+                success: true,
+                data: results,
+            });
+        });
     },
 
     update: async (req, res) => {

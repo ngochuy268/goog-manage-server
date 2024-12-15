@@ -15,20 +15,38 @@ const Product = {
         });
     },
 
-    getAll: () => {
-        return new Promise((resolve, reject) => {
-            db.getConnection((err, connection) => {
-                if (err) {
-                    reject(err);
+    // getAll: (req, res) => {
+    //     return new Promise((resolve, reject) => {
+    //         db.getConnection((err, connection) => {
+    //             if (err) {
+    //                 reject(err);
+    //                 return;
+    //             }
+                
+    //             connection.query('SELECT * FROM sanpham', (error, results) => {
+    //                 connection.release(); 
+                    
+    //                 if (error) reject(error);
+    //                 resolve(results);
+    //             });
+    //         });
+    //     });
+    // },
+    getAll: (callback) => {
+        db.getConnection((err, connection) => {
+            if (err) {
+                callback(err, null);
+                return;
+            }
+
+            connection.query('SELECT * FROM sanpham', (error, results) => {
+                connection.release();
+
+                if (error) {
+                    callback(error, null);
                     return;
                 }
-                
-                connection.query('SELECT * FROM sanpham', (error, results) => {
-                    connection.release(); 
-                    
-                    if (error) reject(error);
-                    resolve(results);
-                });
+                callback(null, results);
             });
         });
     },
