@@ -40,7 +40,7 @@ const productController = {
         // res.send('Hallo');
         db.query('SELECT * FROM sanpham', (error, results) => {
             if (error) {
-                console.error('Database connection error:', err);
+                console.error('Database connection error:', error);
                 return res.status(500).json({
                     success: false,
                     message: 'Failed to connect to database.',
