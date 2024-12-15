@@ -3,7 +3,7 @@ const db = require('../utils/db');
 const Product = {
     insert: (productData) => {
         return new Promise((resolve, reject) => {
-            db.query(
+            db.getConnection(
                 'INSERT INTO sanpham (idgood, namegood, sell, purchase, image, quantity, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
                 [productData.id, productData.name, productData.sell, productData.cost, 
                  productData.image, productData.quantity, productData.status],
@@ -17,7 +17,7 @@ const Product = {
 
     getAll: () => {
         return new Promise((resolve, reject) => {
-            db.query('SELECT * FROM sanpham', (error, results) => {
+            db.getConnection('SELECT * FROM sanpham', (error, results) => {
                 if (error) reject(error);
                 resolve(results);
             });
@@ -26,7 +26,7 @@ const Product = {
 
     update: (productData) => {
         return new Promise((resolve, reject) => {
-            db.query(
+            db.getConnection(
                 'UPDATE sanpham SET namegood = ?, sell = ?, purchase = ?, status = ? WHERE idgood = ?',
                 [productData.namegood, productData.sell, productData.purchase, 
                  productData.status, productData.idgood],
@@ -40,7 +40,7 @@ const Product = {
 
     delete: (id) => {
         return new Promise((resolve, reject) => {
-            db.query('DELETE FROM sanpham WHERE idgood = ?', [id], (error, result) => {
+            db.getConnection('DELETE FROM sanpham WHERE idgood = ?', [id], (error, result) => {
                 if (error) reject(error);
                 resolve(result);
             });
