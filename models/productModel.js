@@ -17,9 +17,18 @@ const Product = {
 
     getAll: () => {
         return new Promise((resolve, reject) => {
-            db.query('SELECT * FROM sanpham', (error, results) => {
-                if (error) reject(error);
-                resolve(results);
+            db.getConnection((err, connection) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                
+                connection.query('SELECT * FROM sanpham', (error, results) => {
+                    connection.release(); 
+                    
+                    if (error) reject(error);
+                    resolve(results);
+                });
             });
         });
     },

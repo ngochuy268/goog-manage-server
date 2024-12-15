@@ -23,9 +23,16 @@ const productController = {
     getAll: async (req, res) => {
         try {
             const products = await Product.getAll();
-            res.json({ success: true, data: products });
+            res.json({
+                success: true,
+                data: products
+            });
         } catch (error) {
-            res.status(500).json({ success: false, message: 'エラーが発生しました!' });
+            console.error('Error in getAll:', error);
+            res.status(500).json({
+                success: false,
+                message: 'エラーが発生しました'
+            });
         }
     },
 
