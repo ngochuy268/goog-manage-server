@@ -19,16 +19,23 @@ app.use(cors({
 app.options('*', cors())
 
 const db = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    connectionLimit: 5,
-    waitForConnections: true,
-    queueLimit: 0,
-    ssl: {
-        rejectUnauthorized: false
-    }
+    // host: process.env.DB_HOST,
+    // user: process.env.DB_USER,
+    // password: process.env.DB_PASSWORD,
+    // database: process.env.DB_NAME,
+    // connectionLimit: 5,
+    // waitForConnections: true,
+    // queueLimit: 0,
+    // ssl: {
+    //     rejectUnauthorized: false
+    // }
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'khohang',
+    // connectionLimit: 5,
+    // waitForConnections: true,
+    // queueLimit: 0,
 });
 
 db.getConnection((err) => {
@@ -280,6 +287,15 @@ app.post('/insert-good', async (req, res) => {
 
 //---------------------------------GET GOODS-----------------------------------------------
 app.get('/get-goods', (req, res) => {
+
+     if (!db) {
+        console.error('2. Database connection không tồn tại');
+        return res.status(500).json({ 
+            success: false, 
+            message: 'データベース接続エラー' 
+        });
+    }
+
     db.query('SELECT * FROM sanpham', (err, rows) => {
         if (err) {
             console.error(err);
