@@ -32,21 +32,22 @@ const Product = {
     //         });
     //     });
     // },
-    getAll: (callback) => {
-        db.getConnection((err, connection) => {
-            if (err) {
-                callback(err, null);
-                return;
-            }
+    getAll: (req,res) => {
+        // db.getConnection((err, connection) => {
+        //     if (err) {
+        //         callback(err, null);
+        //         return;
+        //     }
 
-            connection.query('SELECT * FROM sanpham', (error, results) => {
-                if (error) {
-                    callback(error, null);
-                    return;
-                }
-                callback(null, results);
-            });
-        });
+        //     connection.query('SELECT * FROM sanpham', (error, results) => {
+        //         if (error) {
+        //             callback(error, null);
+        //             return;
+        //         }
+        //         callback(null, results);
+        //     });
+        // });
+        res.send("hello")
     },
 
     update: (productData) => {
