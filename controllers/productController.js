@@ -40,7 +40,7 @@ const productController = {
             if (error) {
                 return;
             }
-            res.json({ success: true, data: rows });
+            res.json({ success: true, data: results });
         });
     },
 
