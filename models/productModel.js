@@ -34,7 +34,6 @@ const Product = {
     // },
     getAll: (callback) => {
         db.query('SELECT * FROM sanpham', (error, results) => {
-            connection.release();
             if (error) {
                 callback(error, null);
                 return;
