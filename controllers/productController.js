@@ -1,5 +1,4 @@
 const Product = require('../models/productModel');
-const db = require('../utils/db.js');
 
 const productController = {
     insert: async (req, res) => {
@@ -21,34 +20,22 @@ const productController = {
         }
     },
 
-    // getAll: async (req, res) => {
-    //     try {
-    //         const products = await Product.getAll();
-    //         res.json({
-    //             success: true,
-    //             data: products
-    //         });
-    //     } catch (error) {
-    //         console.error('Error in getAll:', error);
-    //         res.status(500).json({
-    //             success: false,
-    //             message: 'エラーが発生しました'
-    //         });
-    //     }
-    // },
-    getAll: (req, res) => {
-        // res.send('Hallo');
-        db.query('SELECT * FROM sanpham', (error, results) => {
-            if (error) {
-                console.error('Database connection error:', error);
-                return res.status(500).json({
-                    success: false,
-                    message: 'Failed to connect to database.',
-                });
-            }
-            res.json({ success: true, data: results });
-        });
+    getAll: async (req, res) => {
+        try {
+            const products = await Product.getAll();
+            res.json({
+                success: true,
+                data: products
+            });
+        } catch (error) {
+            console.error('Error in getAll:', error);
+            res.status(500).json({
+                success: false,
+                message: 'エラーが発生しました'
+            });
+        }
     },
+
 
     update: async (req, res) => {
         try {

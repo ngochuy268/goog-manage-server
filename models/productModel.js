@@ -15,32 +15,24 @@ const Product = {
         });
     },
 
-    // getAll: (req, res) => {
-    //     return new Promise((resolve, reject) => {
-    //         db.getConnection((err, connection) => {
-    //             if (err) {
-    //                 reject(err);
-    //                 return;
-    //             }
+    getAll: (req, res) => {
+        return new Promise((resolve, reject) => {
+            db.getConnection((err, connection) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
                 
-    //             connection.query('SELECT * FROM sanpham', (error, results) => {
-    //                 connection.release(); 
+                connection.query('SELECT * FROM sanpham', (error, results) => {
+                    connection.release(); 
                     
-    //                 if (error) reject(error);
-    //                 resolve(results);
-    //             });
-    //         });
-    //     });
-    // },
-    getAll: (callback) => {
-        db.query('SELECT * FROM sanpham', (error, results) => {
-            if (error) {
-                callback(error, null);
-                return;
-            }
-            callback(null, results);
+                    if (error) reject(error);
+                    resolve(results);
+                });
+            });
         });
     },
+    
 
     update: (productData) => {
         return new Promise((resolve, reject) => {
