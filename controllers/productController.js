@@ -36,20 +36,19 @@ const productController = {
     //     }
     // },
     getAll: (req, res) => {
-        // Product.getAll((error, results) => {
-        //     if (error) {
-        //         console.error('GetAll error:', error);
-        //         return res.status(500).json({
-        //             success: false,
-        //             message: 'Error occurred while fetching products.',
-        //         });
-        //     }
-        //     res.json({
-        //         success: true,
-        //         data: results,
-        //     });
-        // });
-        res.send("Hello");
+        Product.getAll((error, results) => {
+            if (error) {
+                console.error('GetAll error:', error);
+                return res.status(500).json({
+                    success: false,
+                    message: 'Error occurred while fetching products.',
+                });
+            }
+            res.json({
+                success: true,
+                data: results,
+            });
+        });
     },
 
     update: async (req, res) => {

@@ -1,4 +1,4 @@
-const db = require('../utils/db');
+const db = require('../utils/db.js');
 
 const Product = {
     insert: (productData) => {
@@ -32,22 +32,15 @@ const Product = {
     //         });
     //     });
     // },
-    getAll: (req,res) => {
-        // db.getConnection((err, connection) => {
-        //     if (err) {
-        //         callback(err, null);
-        //         return;
-        //     }
-
-        //     connection.query('SELECT * FROM sanpham', (error, results) => {
-        //         if (error) {
-        //             callback(error, null);
-        //             return;
-        //         }
-        //         callback(null, results);
-        //     });
-        // });
-        res.send("hello")
+    getAll: (callback) => {
+        db.query('SELECT * FROM sanpham', (error, results) => {
+            connection.release();
+            if (error) {
+                callback(error, null);
+                return;
+            }
+            callback(null, results);
+        });
     },
 
     update: (productData) => {
