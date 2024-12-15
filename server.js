@@ -42,7 +42,7 @@ app.post('/insert-nhanvien', async (req, res) => {
     const { id, name, password, gender, phone, email, address, avatar, birthday } = req.body;
     
     if (!id || !name || !password || !gender || !phone || !email || !address || !birthday) {
-        return res.status(400).json({ success: false, message: 'Dữ liệu không hợp lệ!' });
+        return res.status(400).json({ success: false, message: 'データが無効です!' });
     }
     
     try {
@@ -52,13 +52,13 @@ app.post('/insert-nhanvien', async (req, res) => {
         `, [id, name, password, gender, phone, email, address, avatar, birthday]);
 
         if (result) {
-            res.json({ success: true, message: 'Thêm nhân viên thành công!' });
+            res.json({ success: true, message: '社員の追加が成功しました!' });
         } else {
-            res.status(500).json({ success: false, message: 'Không thể thêm nhân viên vào cơ sở dữ liệu!' });
+            res.status(500).json({ success: false, message: 'データベースに社員を追加できません!' });
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: 'Có lỗi xảy ra, vui lòng thử lại!' });
+        res.status(500).json({ success: false, message: 'エラーが発生しました。もう一度お試しください。' });
     }
 });
 
@@ -70,10 +70,10 @@ app.post('/login', (req, res) => {
 
     const sql = 'SELECT password FROM nhanvien WHERE id = ?';
     db.query(sql, [id], (err, results) => {
-        if (err) return res.status(500).json({ error: 'Có lỗi xảy ra' });
+        if (err) return res.status(500).json({ error: 'エラーが発生しました' });
 
         if (results.length === 0) {
-            return res.status(404).json({ message: 'ID không tồn tại' });
+            return res.status(404).json({ message: 'IDが存在しません' });
         }
         const storedPassword = results[0].password;
 
@@ -84,12 +84,12 @@ app.post('/login', (req, res) => {
 
             return res.status(200).json({
                 success: true,
-                message: 'Đăng nhập thành công',
+                message: 'ログイン成功',
                 token,
                 userId: id
             });
         } else {
-            return res.status(401).json({ message: 'Mật khẩu không đúng' });
+            return res.status(401).json({ message: 'パスワードが正しくありません' });
         }
     });
 });
@@ -106,7 +106,7 @@ app.get('/get-nhanvien/:id', async (req, res) => {
             if (err) {
                 return res.status(500).json({
                     success: false,
-                    message: 'Có lỗi xảy ra khi truy vấn cơ sở dữ liệu'
+                    message: 'データベースクエリ中にエラーが発生しました'
                 });
             }
 
@@ -118,7 +118,7 @@ app.get('/get-nhanvien/:id', async (req, res) => {
             } else {
                 res.status(404).json({
                     success: false,
-                    message: 'Không tìm thấy nhân viên!'
+                    message: '社員が見つかりませんでした!'
                 });
             }
         });
@@ -126,7 +126,7 @@ app.get('/get-nhanvien/:id', async (req, res) => {
         console.error(error);
         res.status(500).json({
             success: false,
-            message: 'Có lỗi xảy ra, vui lòng thử lại!'
+            message: 'データベースクエリ中にエラーが発生しました'
         });
     }
 });
@@ -178,19 +178,19 @@ app.post('/change-password', (req, res) => {
     const sql = 'SELECT * FROM nhanvien WHERE id = ?';
     db.query(sql, [id], (err, results) => {
         if (err) {
-            return res.status(500).json({ error: 'Có lỗi xảy ra khi truy vấn cơ sở dữ liệu' });
+            return res.status(500).json({ error: 'データベースクエリ中にエラーが発生しました' });
         }
 
         if (results.length === 0) {
-            return res.status(404).json({ message: 'ID không tồn tại' });
+            return res.status(404).json({ message: 'IDが存在しません' });
         }
 
         const updateSql = 'UPDATE nhanvien SET password = ? WHERE id = ?';
         db.query(updateSql, [password, id], (updateErr, updateResults) => {
             if (updateErr) {
-                return res.status(500).json({ success: false,  error: 'Có lỗi xảy ra khi cập nhật mật khẩu' });
+                return res.status(500).json({ success: false,  error: 'パスワード更新中にエラーが発生しました' });
             }
-            return res.status(200).json({ success: true, message: 'Mật khẩu đã được thay đổi thành công' });
+            return res.status(200).json({ success: true, message: 'パスワードが正常に変更されました' });
         });
     });
 });
@@ -213,10 +213,10 @@ app.post('/send-otp', async (req, res) => {
     const sql = 'SELECT * FROM nhanvien WHERE id = ? AND email = ?';
     db.query(sql, [id, email], async (err, results) => {
         if (err) {
-            return res.status(500).json({ success: false, message: 'Có lỗi xảy ra khi truy vấn cơ sở dữ liệu' });
+            return res.status(500).json({ success: false, message: 'データベースクエリ中にエラーが発生しました' });
         }
         if (results.length === 0) {
-            return res.status(404).json({ success: false, message: 'ID không tồn tại trong hệ thống' });
+            return res.status(404).json({ success: false, message: 'IDがシステム内に存在しません' });
         }
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString(); 
@@ -229,9 +229,9 @@ app.post('/send-otp', async (req, res) => {
                 text: `Your OTP code is: ${otp}`,
             });
 
-            res.status(200).json({ success: true, message: 'OTP đã được gửi đến email của bạn!' });
+            res.status(200).json({ success: true, message: 'OTPがメールに送信されました!' });
         } catch (error) {
-            res.status(500).json({ success: false, message: 'Không thể gửi OTP, vui lòng thử lại!' });
+            res.status(500).json({ success: false, message: 'OTPを送信できませんでした。もう一度お試しください。' });
         }
     });
 });
@@ -241,9 +241,9 @@ app.post('/verify-otp', (req, res) => {
 
     if (otpStore[email] === otp) {
         delete otpStore[email]; 
-        res.status(200).json({ success: true, message: 'OTP verified successfully!' });
+        res.status(200).json({ success: true, message: 'OTPの認証が成功しました!' });
     } else {
-        res.status(400).json({ success: false, message: 'Invalid OTP!' });
+        res.status(400).json({ success: false, message: '無効なOTPです!' });
     }
 });
 
