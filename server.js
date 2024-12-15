@@ -16,7 +16,7 @@ app.use(cors({
     methods: 'GET, POST', 
     allowedHeaders: 'Content-Type, Authorization', 
 }));
-
+app.options('*', cors())
 
 const db = mysql.createPool({
     host: process.env.DB_HOST,
