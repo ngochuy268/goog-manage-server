@@ -7,7 +7,7 @@ const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
 const otpRoutes = require('./routes/otpRoutes');
 
-const app = express.Router();
+const app = express();
 
 // Middleware
 app.use(cors({
