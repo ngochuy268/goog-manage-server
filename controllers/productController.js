@@ -36,18 +36,11 @@ const productController = {
     //     }
     // },
     getAll: (req, res) => {
-        Product.getAll((error, results) => {
+        db.query('SELECT * FROM sanpham', (error, results) => {
             if (error) {
-                console.error('GetAll error:', error);
-                return res.status(500).json({
-                    success: false,
-                    message: 'Error occurred while fetching products.',
-                });
+                return;
             }
-            res.json({
-                success: true,
-                data: results,
-            });
+            res.status(200).send(results);
         });
     },
 
