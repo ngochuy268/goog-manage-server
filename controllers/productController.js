@@ -36,7 +36,7 @@ const productController = {
     //     }
     // },
     getAll: (req, res) => {
-        console.log("hallo")
+        res.send('Hallo');
         db.query('SELECT * FROM sanpham', (error, results) => {
             if (error) {
                 return;
