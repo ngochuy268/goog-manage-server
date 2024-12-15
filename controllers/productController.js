@@ -1,4 +1,5 @@
 const Product = require('../models/productModel');
+const db = require('../utils/db.js');
 
 const productController = {
     insert: async (req, res) => {
@@ -36,7 +37,7 @@ const productController = {
     //     }
     // },
     getAll: (req, res) => {
-        res.send('Hallo');
+        // res.send('Hallo');
         db.query('SELECT * FROM sanpham', (error, results) => {
             if (error) {
                 return;
