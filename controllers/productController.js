@@ -37,29 +37,16 @@ const productController = {
     //     }
     // },
     getAll: (req, res) => {
-        db.getConnection((err, connection) => { // Lấy kết nối từ pool
-            if (err) {
+        // res.send('Hallo');
+        db.query('SELECT * FROM sanpham', (error, results) => {
+            if (error) {
                 console.error('Database connection error:', err);
                 return res.status(500).json({
                     success: false,
                     message: 'Failed to connect to database.',
                 });
             }
-    
-            connection.query('SELECT * FROM sanpham', (error, results) => {
-                // Trả kết nối lại pool dù thành công hay lỗi
-                connection.release();
-    
-                if (error) {
-                    console.error('Query error:', error);
-                    return res.status(500).json({
-                        success: false,
-                        message: 'Error occurred while fetching products.',
-                    });
-                }
-    
-                res.json({ success: true, data: results });
-            });
+            res.json({ success: true, data: results });
         });
     },
 
