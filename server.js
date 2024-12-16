@@ -288,10 +288,10 @@ app.post('/insert-good', async (req, res) => {
 app.get('/get-goods', (req, res) => {
    
     db.query('SELECT * FROM sanpham', (err, rows) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ success: false, message: 'データの取得中にエラーが発生しました。' });
-        }
+        // if (err) {
+        //     console.error(err);
+        //     return res.status(500).json({ success: false, message: 'データの取得中にエラーが発生しました。' });
+        // }
         res.json({ success: true, data: rows });
     });
 });
