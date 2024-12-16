@@ -1,7 +1,7 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const cors = require('cors');
 const app = express();
 app.use(cors());
@@ -23,9 +23,8 @@ const db = mysql.createPool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    connectionLimit: 5,
+    connectionLimit: 10,
     waitForConnections: true,
-    queueLimit: 0,
     ssl: {
         rejectUnauthorized: false
     }
