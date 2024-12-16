@@ -27,7 +27,7 @@ const db = mysql.createPool({
     waitForConnections: true,
     queueLimit: 0,
     ssl: {
-        rejectUnauthorized: false
+        rejectUnauthorized: true
     }
     // host: 'localhost',
     // user: 'root',
@@ -287,15 +287,7 @@ app.post('/insert-good', async (req, res) => {
 
 //---------------------------------GET GOODS-----------------------------------------------
 app.get('/get-goods', (req, res) => {
-
-     if (!db) {
-        console.error('2. Database connection không tồn tại');
-        return res.status(500).json({ 
-            success: false, 
-            message: 'データベース接続エラー' 
-        });
-    }
-
+   
     db.query('SELECT * FROM sanpham', (err, rows) => {
         if (err) {
             console.error(err);
